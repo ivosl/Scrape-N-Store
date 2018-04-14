@@ -1,0 +1,75 @@
+body { 
+  background-color: rgb(245, 230, 165) 
+}
+#wrapper {
+  width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 5%;
+}
+#articles {
+  display: inline-block;
+  overflow: auto;
+  width: 60%;
+  height: 700px;
+}
+#notes {
+  float: right;
+  width: 30%;
+}
+textarea, input {
+  display: block;
+  width: 100%;
+  background-color: rgb(199, 228, 252);
+}
+input {
+  height: 36px;
+  font-size: 24px;
+}
+textarea {
+  height: 200px;
+  font-size: 18px;
+}
+#show {
+  background-color: rgb(76, 127, 175);
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+#scrape {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+#save, #savenote, #deletenote {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+}
+
+#deletenote {
+  background-color: red;
+  margin-left: 10px;
+  border: none;
+  color: white;
+}
+
+
+h2 {
+  font-size: 35;
+  text-decoration: underline;
+  color: #4CAF50;
+}

@@ -1,4 +1,6 @@
+// Dependencies
 var express = require("express");
+var mongojs = require("mongojs");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
@@ -19,7 +21,11 @@ var app = express();
 
 // Configure middleware
 
-// Use morgan logger for logging requests
+// Set the app up with morgan.
+// morgan is used to log our HTTP Requests. By setting morgan to 'dev'
+// the :status token will be colored red for server error codes,
+// yellow for client error codes, cyan for redirection codes,
+// and uncolored for all other codes.
 app.use(logger("dev"));
 // Use body-parser for handling form submissions
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -31,7 +37,7 @@ mongoose.connect("mongodb://localhost/scrapeNsave");
 
 // Routes
 
-// A GET route for scraping the echoJS website
+// A GET route for scraping the coindesk website
 app.get("/scrape", function(req, res) {
 
     db.Article.remove({});
@@ -42,7 +48,7 @@ app.get("/scrape", function(req, res) {
 
     //   db.Article.drop({});
   
-      // Now, we grab every h2 within an article tag, and do the following:
+      // Now, we grab every h3 and <p> summary within an article tag, and do the following:
 
       $("h3, p").each(function(i, element) {
         // Save an empty result object
@@ -58,8 +64,8 @@ app.get("/scrape", function(req, res) {
         result.summary = $(this)
           .parent()
           .text();
-  
-        // Create a new Article using the `result` object built from scraping
+        console.log(result)
+    //     // Create a new Article using the `result` object built from scraping
         db.Article.create(result)
           .then(function(dbArticle) {
             // View the added result in the console
@@ -67,11 +73,14 @@ app.get("/scrape", function(req, res) {
           })
           .catch(function(err) {
             // If an error occurred, send it to the client
-            return res.json(err);
-          });
+            // return res.json(err);
+          })
+          .catch(function(e) {
+              console.log(e);
+          })
       });
   
-      // If we were able to successfully scrape and save an Article, send a message to the client
+      // If we were able to successfully     scrape and save an Article, send a message to the client
       res.send("Scrape Complete");
     });
   });
@@ -105,6 +114,24 @@ app.get("/scrape", function(req, res) {
         res.json(err);
       });
   });
+
+  //Route for saving an article
+  app.post("/save/:id", function(req, res) {
+    // Save an Article in the database
+    db.Article.update(req.body)
+      .then(function(dbArticle) {
+        return db.Article.findOneAndUpdate({ _id: req.params.id }, {saved: true}, { new: true });
+      })
+      .then(function(dbArticle) {
+        // If we were able to successfully update an Article, send it back to the client
+        res.json(dbArticle);
+      })
+      .catch(function(err) {
+        // If an error occurred, send it to the client
+        res.json(err);
+      });
+  });
+  
   
   // Route for saving/updating an Article's associated Note
   app.post("/articles/:id", function(req, res) {
@@ -124,6 +151,28 @@ app.get("/scrape", function(req, res) {
         // If an error occurred, send it to the client
         res.json(err);
       });
+  });
+
+  app.get("/delete/:id", function(req, res) {
+    // Remove a note using the objectID
+    db.Note.remove(
+      {
+        _id: mongojs.ObjectID(req.params.id)
+      },
+      function(error, removed) {
+        // Log any errors from mongojs
+        if (error) {
+          console.log(error);
+          res.send(error);
+        }
+        else {
+          // Otherwise, send the mongojs response to the browser
+          // This will fire off the success function of the ajax request
+          console.log(removed);
+          res.send(removed);
+        }
+      }
+    );
   });
   
   // Start the server

@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="jumbotron d-flex justify-content-around text-center align-items w-100">
+        <div class="card text-center">
+        <h1>Eat Da Burger!</h1>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Scraped Articles:</h2>
+            {{!-- looping through the burgers to be eaten --}}
+                {{#each article}} 
+                  <p>Title: {{title}}</p>
+                  <p>Link: {{link}}</p>
+                  <p>Summary: {{summary}}</p>
+                  <hr>
+                {{!-- {{#unless devoured}}
+                {{> burgers/devour devoured=true}} 
+                {{/unless}}  --}}
+                {{/each}}
+        </div>
+
+        {{!-- <div class="col-md-6">
+            <h2>Devoured Burgers:</h2>
+            {{!-- looping through the burgers --}}
+                {{#each burgers}} 
+                {{#if devoured}} 
+                {{> burgers/devour devoured=false}}
+                {{!-- adding delete button to each burgere that is devoured --}}
+                <button class="delete-burger" data-id="{{this.id}}">FLUSH IT!</button>
+                {{/if}} 
+                {{/each}}
+        </div> --}}
+    </div>
+</div>
+<button class = "show">Show</button>
+<div id="wrapper">
+      <div id="articles"></div>
+      <div id="notes"></div>
+</div>
+
+{{!-- <div class="card text-center">
+    <h3>Enter a Burger You Want To Eat</h3>
+    <form class="create-form">
+<div class="form-group">
+    <label for="bur">Burger Name:</label>
+    <input type="text" id="bur" name="name">
+</div>
+
+<button type="submit">Add Burger</button>
+</form>
+</div> --}}
