@@ -4,7 +4,7 @@ $('#scrape').on("click", function() {
   $.ajax({
     type: "GET",
     dataType: "json",
-    url: "http://localhost:3000/scrape",
+    url: "/scrape",
     success: function(response){
       // $("#display_results").html("toggle");
       // $("#display_results").modal("toggle");
